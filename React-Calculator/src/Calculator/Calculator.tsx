@@ -13,7 +13,6 @@ export default function Calculator() {
     const [tallyValue, setTallyValue] = useState<number>(0);
 
     function clickedNum(displayNum: string, num: string): string {
-        console.log('clickedNum');
         if (displayValue === '0') {
             return num;
         } else {
@@ -81,15 +80,7 @@ export default function Calculator() {
     return (
         <Container className="App">
             <Row>
-                <CalcDisplay />
-            </Row>
-            <Row>
-                <Col>
-                    {displayValue}
-                </Col>
-                <Col>
-                    {lastOperand}
-                </Col>
+                <CalcDisplay DisplayValue={displayValue} LastOperand={lastOperand}/>
             </Row>
             <Row>
                 <Col>
