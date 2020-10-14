@@ -1,10 +1,10 @@
-.btn {
-    color: white !important;
-    margin: 3px;
-    text-align: center !important;
-    font-size: 25px !important;
+.btn.calculator-button {
+    color: white;
+    margin: 2px;
+    text-align: center;
+    font-size: 25px;
     border-style: solid;
-    border-width: 1px !important;
-    border-color: white !important;
-    width: 60px !important;
+    border-width: 2px;
+    border-color: white;
+    width: 70px;
 }

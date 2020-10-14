@@ -1,5 +1,8 @@
-.Calculator{
+.container.calculator{
     background-color: #282c34;
-    color: white;
     text-align: center;
+}
+
+.col.calculator{
+    background-color: #718792 ;
 }

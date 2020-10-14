@@ -14,7 +14,7 @@ function CalculatorDisplay(props: CalculatorDisplayProps) {
     // let tallyValue = props.TallyValue && props.TallyValue !== '0' ? <Col> {props.TallyValue} </Col> : '';
     // let lastOperand = props.LastOperand ? <Col> {props.LastOperand} </Col> : '';
     return (
-        <div className="CalculatorDisplay">
+        <div className="calculator-display">
             {props.DisplayText}
             {/* {tallyValue}
             <Col>

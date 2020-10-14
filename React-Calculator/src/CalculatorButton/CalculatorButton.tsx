@@ -9,7 +9,7 @@ interface CalculatorButtonProps {
 
 function CalculatorButton(props: CalculatorButtonProps) {
     return (
-        <Button className="calculatorButton btn btn-lg btn-secondary" onClick={props.HandleClick}> {props.Text}</Button>
+        <Button className="calculator-button btn btn-lg btn-secondary" onClick={props.HandleClick}> {props.Text}</Button>
     )
 }
 
