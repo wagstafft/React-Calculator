@@ -16,6 +16,19 @@ function clickCalcButton(searchText: string) {
   }
 }
 
+function pressKey(searchText: string) {
+  let element = screen.queryAllByText(searchText).length === 1 ? screen.queryByText(searchText) : screen.queryAllByText(searchText)[1];
+  if (element) {
+    fireEvent.keyPress(element, {key: searchText});
+  }
+}
+
+function pressSeriesOfKeys(text: string) {
+  for(let char of text) {
+    pressKey(char);
+  }
+}
+
 function clickSeriesOfButtons(text: string) {
   for (let char of text) {
     clickCalcButton(char);
@@ -64,7 +77,7 @@ test('clear input', () => {
   expect(screen.queryByText('123')).toBeFalsy();
   clickSeriesOfButtons('123');
   expect(screen.queryByText('123')).toBeTruthy();
-  clickCalcButton('X');
+  clickCalcButton('Clr');
   expect(screen.queryByText('123')).toBeFalsy();
 });
 
@@ -78,4 +91,32 @@ test('display negative number', () => {
   expect(screen.queryByText('-123')).toBeFalsy();
   clickSeriesOfButtons('-123=');
   expect(screen.queryByText('-123')).toBeTruthy();
+});
+
+test('test key presses', () => {
+  expect(screen.queryByText('-123')).toBeFalsy();
+  pressSeriesOfKeys('-123=');
+  // clickSeriesOfButtons('-123=');
+  expect(screen.queryByText('-123')).toBeTruthy();
+});
+
+
+test('test mixing key presses and clicks', () => {
+  expect(screen.queryByText('-150')).toBeFalsy();
+  pressSeriesOfKeys('150');
+  clickSeriesOfButtons('-450');
+  clickSeriesOfButtons('=');
+  pressSeriesOfKeys('+150=');
+  expect(screen.queryByText('-150')).toBeTruthy();
+});
+
+test('test bug with key presses being broken after a click resolved', () => {
+  expect(screen.queryByText('246')).toBeFalsy();
+  pressSeriesOfKeys('123');
+  pressSeriesOfKeys('+123=');
+  expect(screen.queryByText('246')).toBeTruthy();
+  clickCalcButton('Clr');
+  pressSeriesOfKeys('123');
+  pressSeriesOfKeys('+123=');
+  expect(screen.queryByText('246')).toBeTruthy();
 });
