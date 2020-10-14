@@ -132,14 +132,14 @@ export default function Calculator() {
     }
 
     return (
-        <Container fluid={true} className="Calculator">
+        <Container fluid={false} className="Calculator">
             <Row>
-                <Col xs={{ span: 3, offset: 5 }}>
+                <Col xs={{ span: 5, offset: 4 }}>
                     <CalcDisplay DisplayText={getDisplayString()} DisplayValue={state.displayValue} LastOperand={state.lastOperand} TallyValue={state.tallyValue.toString()} />
                 </Col>
             </Row>
             <Row>
-                <Col xs={{ span: 3, offset: 5 }}>
+                <Col xs={{ span: 5, offset: 4 }}>
                     <CalcButton Text='7' HandleClick={() => changeDisplayValue(clickedNum('7'))} />
                     <CalcButton Text='8' HandleClick={() => changeDisplayValue(clickedNum('8'))} />
                     <CalcButton Text='9' HandleClick={() => changeDisplayValue(clickedNum('9'))} />
@@ -147,7 +147,7 @@ export default function Calculator() {
                 </Col>
             </Row>
             <Row>
-                <Col xs={{ span: 3, offset: 5 }}>
+                <Col xs={{ span: 5, offset: 4 }}>
                     <CalcButton Text='4' HandleClick={() => changeDisplayValue(clickedNum('4'))} />
                     <CalcButton Text='5' HandleClick={() => changeDisplayValue(clickedNum('5'))} />
                     <CalcButton Text='6' HandleClick={() => changeDisplayValue(clickedNum('6'))} />
@@ -155,7 +155,7 @@ export default function Calculator() {
                 </Col>
             </Row>
             <Row>
-                <Col xs={{ span: 3, offset: 5 }}>
+                <Col xs={{ span: 5, offset: 4 }}>
                     <CalcButton Text='1' HandleClick={() => changeDisplayValue(clickedNum('1'))} />
                     <CalcButton Text='2' HandleClick={() => changeDisplayValue(clickedNum('2'))} />
                     <CalcButton Text='3' HandleClick={() => changeDisplayValue(clickedNum('3'))} />
@@ -163,11 +163,11 @@ export default function Calculator() {
                 </Col>
             </Row>
             <Row>
-                <Col xs={{ span: 3, offset: 5 }}>
+                <Col xs={{ span: 5, offset: 4 }}>
                     <CalcButton Text='0' HandleClick={() => changeDisplayValue(clickedNum('0'))} />
                     <CalcButton Text='=' HandleClick={() => clickedEqual()} />
                 </Col>
             </Row>
-        </Container>
+        </Container >
     );
 }
