@@ -135,7 +135,6 @@ export default function Calculator() {
         <Container fluid={false} className="Calculator">
             <Row>
                 <Col xs={{ span: 5, offset: 4 }}>
-                    Testing automatic deployment
                     <CalcDisplay DisplayText={getDisplayString()} DisplayValue={state.displayValue} LastOperand={state.lastOperand} TallyValue={state.tallyValue.toString()} />
                 </Col>
             </Row>
