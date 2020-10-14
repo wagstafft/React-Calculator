@@ -1,5 +1,7 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
+import './CalculatorButton.css';
+
 interface CalculatorButtonProps {
     Text: string;
     HandleClick: any;
@@ -7,7 +9,7 @@ interface CalculatorButtonProps {
 
 function CalculatorButton(props: CalculatorButtonProps) {
     return (
-        <Button className="btn btn-lg btn-secondary" onClick={props.HandleClick}> {props.Text}</Button>
+        <Button className="calculatorButton btn btn-lg btn-secondary" onClick={props.HandleClick}> {props.Text}</Button>
     )
 }
 

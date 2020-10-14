@@ -1,8 +1,8 @@
-import React, { FC, ChangeEvent, FormEvent, useState } from 'react';
-import logo from './logo.svg';
-import CalcButton from '../CalculatorButton/CalcButton';
+import React, { useState } from 'react';
+import CalcButton from '../CalculatorButton/CalculatorButton';
 import CalcDisplay from '../CalculatorDisplay/CalculatorDisplay';
 import '../App/App.css';
+import './Calculator.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -31,24 +31,26 @@ export default function Calculator() {
             return;
         }
 
-        let changedTallyValue = tallyValue
+        let changedDisplayValue = tallyValue
 
         if (lastOperand === '+') {
-            changedTallyValue += +displayValue;
-            setTallyValue(changedTallyValue);
+            changedDisplayValue += +displayValue;
         } else if (lastOperand === '-') {
-            changedTallyValue -= +displayValue;
-            setTallyValue(changedTallyValue);
+            changedDisplayValue -= +displayValue;
         }
 
-        setDisplayValue(changedTallyValue.toString());
+        setTallyValue(0);
+        setDisplayValue(changedDisplayValue.toString());
         setLastOperand('');
     }
 
     function clickedOperand(operand: string): void {
+        if (lastOperand === '') {
+            setTallyValue(+displayValue);
+            setDisplayValue('0');
+        }
+
         setLastOperand(operand);
-        setTallyValue(+displayValue);
-        setDisplayValue('0');
     }
 
     document.onkeypress = function (event) {
@@ -77,10 +79,16 @@ export default function Calculator() {
         }
     };
 
+    function getDisplayString() {
+        return `${tallyValue ? tallyValue : ''}${lastOperand && displayValue ? lastOperand : ''}${displayValue}`;
+    }
+
     return (
-        <Container className="App">
+        <Container className="Calculator">
             <Row>
-                <CalcDisplay DisplayValue={displayValue} LastOperand={lastOperand}/>
+                <Col>
+                    <CalcDisplay DisplayText={getDisplayString()} DisplayValue={displayValue} LastOperand={lastOperand} TallyValue={tallyValue.toString()} />
+                </Col>
             </Row>
             <Row>
                 <Col>
@@ -110,10 +118,6 @@ export default function Calculator() {
                 <Col>
                     <CalcButton Text='0' HandleClick={() => setDisplayValue(clickedNum(displayValue, '0'))} />
                     <CalcButton Text='=' HandleClick={() => clickedEqual()} />
-                </Col>
-            </Row>
-            <Row>
-                <Col>
                 </Col>
             </Row>
         </Container>

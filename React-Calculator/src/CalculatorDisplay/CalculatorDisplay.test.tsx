@@ -13,9 +13,8 @@ afterEach(() => {
 test('renders', () => {
   let displayValue = '1234';
   let lastOperand = '-';
-  expect(screen.queryByText(displayValue)).toBeFalsy();
-  expect(screen.queryByText(lastOperand)).toBeFalsy();
-  render(<CalculatorDisplay DisplayValue={displayValue} LastOperand={lastOperand}/>);
-  expect(screen.queryByText(displayValue)).toBeTruthy();
-  expect(screen.queryByText(lastOperand)).toBeTruthy();
+  let displayText = '1234-5';
+    expect(screen.queryByText(displayText)).toBeFalsy();
+  render(<CalculatorDisplay TallyValue={'0'} DisplayValue={displayValue} LastOperand={lastOperand} DisplayText={displayText}/>);
+  expect(screen.queryByText(displayText)).toBeTruthy();
 });
