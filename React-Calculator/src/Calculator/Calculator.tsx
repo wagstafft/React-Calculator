@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CalcButton from '../CalculatorButton/CalculatorButton';
 import CalcDisplay from '../CalculatorDisplay/CalculatorDisplay';
 import '../App/App.css';
@@ -7,63 +7,99 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 
-export default function Calculator() {
-    const [displayValue, setDisplayValue] = useState<string>('0');
-    const [lastOperand, setLastOperand] = useState<string>('');
-    const [tallyValue, setTallyValue] = useState<number>(0);
+interface ICalculatorState {
+    displayValue: string,
+    lastOperand: string,
+    tallyValue: number
+};
 
-    function clickedNum(displayNum: string, num: string): string {
-        if (displayValue === '0') {
+export default function Calculator() {
+    const [state, setState] = useState<ICalculatorState>({
+        displayValue: '0',
+        lastOperand: '',
+        tallyValue: 0
+    });
+
+    function clickedNum(num: string): string {
+        if (state.displayValue === '0') {
             return num;
         } else {
-            return displayNum + num;
+            return state.displayValue + num;
         }
     }
 
     function clear(): void {
-        setDisplayValue('0');
-        setLastOperand('');
-        setTallyValue(0);
+        setState({
+            displayValue: '0',
+            lastOperand: '',
+            tallyValue: 0
+        });
     }
 
     function clickedEqual(): void {
-        if (lastOperand === '') {
+        if (state.lastOperand === '') {
             return;
         }
 
-        let changedDisplayValue = tallyValue
+        let changedState: ICalculatorState = {
+            displayValue: state.displayValue,
+            lastOperand: state.lastOperand,
+            tallyValue: state.tallyValue
+        };
 
-        if (lastOperand === '+') {
-            changedDisplayValue += +displayValue;
-        } else if (lastOperand === '-') {
-            changedDisplayValue -= +displayValue;
+        let changedDisplayValue = state.tallyValue
+
+        if (state.lastOperand === '+') {
+            changedDisplayValue += +state.displayValue;
+        } else if (state.lastOperand === '-') {
+            changedDisplayValue -= +state.displayValue;
         }
 
-        setTallyValue(0);
-        setDisplayValue(changedDisplayValue.toString());
-        setLastOperand('');
+        changedState.tallyValue = 0;
+        changedState.displayValue = changedDisplayValue.toString();
+        changedState.lastOperand = '';
+        setState(changedState);
+    }
+
+    function changeDisplayValue(text: string): void {
+        setState({
+            displayValue: text,
+            tallyValue: state.tallyValue,
+            lastOperand: state.lastOperand
+        });
     }
 
     function clickedOperand(operand: string): void {
-        if (lastOperand === '') {
-            setTallyValue(+displayValue);
-            setDisplayValue('0');
+        let changedState: ICalculatorState = {
+            displayValue: state.displayValue,
+            lastOperand: state.lastOperand,
+            tallyValue: state.tallyValue
+        };
+
+        if (state.lastOperand === '') {
+            changedState.tallyValue = +state.displayValue;
+            changedState.displayValue = '0';
         }
 
-        setLastOperand(operand);
+        changedState.lastOperand = operand;
+        setState(changedState);
     }
 
-    document.onkeypress = function (event) {
-        //alert(event);
-        event = event || window.event;
-        console.log(event);
+    function handleKeyPressed(event: any) {
+        event.preventDefault();
+        let changedState: ICalculatorState = {
+            displayValue: state.displayValue,
+            lastOperand: state.lastOperand,
+            tallyValue: state.tallyValue
+        };
+
         if (event.key === '0') {
-            setDisplayValue(clickedNum(displayValue, '0'));
-        }
-        if (+event.key) {
-            setDisplayValue(clickedNum(displayValue, event.key));
+            changedState.displayValue = clickedNum('0');
+            setState(changedState);
+        } else if (+event.key) {
+            changedState.displayValue = clickedNum(event.key);
+            setState(changedState);
         } else {
-            //alert ('not num');
             switch (event.key) {
                 case '-':
                     clickedOperand('-');
@@ -75,48 +111,60 @@ export default function Calculator() {
                 case 'Enter':
                     clickedEqual();
                     break;
+                default:
+                    break;
             }
         }
-    };
+    }
+
+    useEffect(() => {
+        window.addEventListener('keypress', handleKeyPressed);
+        return () => {
+            window.removeEventListener('keypress', handleKeyPressed);
+        }
+    });
 
     function getDisplayString() {
-        return `${tallyValue ? tallyValue : ''}${lastOperand && displayValue ? lastOperand : ''}${displayValue}`;
+        let displayString = `${state.lastOperand ? state.tallyValue : ''}`;
+        displayString += `${state.lastOperand ? state.lastOperand : ''}`;
+        displayString += `${state.displayValue}`;
+        return displayString;
     }
 
     return (
-        <Container className="Calculator">
+        <Container fluid={true} className="Calculator">
             <Row>
-                <Col>
-                    <CalcDisplay DisplayText={getDisplayString()} DisplayValue={displayValue} LastOperand={lastOperand} TallyValue={tallyValue.toString()} />
+                <Col xs={{ span: 3, offset: 5 }}>
+                    <CalcDisplay DisplayText={getDisplayString()} DisplayValue={state.displayValue} LastOperand={state.lastOperand} TallyValue={state.tallyValue.toString()} />
                 </Col>
             </Row>
             <Row>
-                <Col>
-                    <CalcButton Text='7' HandleClick={() => setDisplayValue(clickedNum(displayValue, '7'))} />
-                    <CalcButton Text='8' HandleClick={() => setDisplayValue(clickedNum(displayValue, '8'))} />
-                    <CalcButton Text='9' HandleClick={() => setDisplayValue(clickedNum(displayValue, '9'))} />
-                    <CalcButton Text='X' HandleClick={() => clear()} />
+                <Col xs={{ span: 3, offset: 5 }}>
+                    <CalcButton Text='7' HandleClick={() => changeDisplayValue(clickedNum('7'))} />
+                    <CalcButton Text='8' HandleClick={() => changeDisplayValue(clickedNum('8'))} />
+                    <CalcButton Text='9' HandleClick={() => changeDisplayValue(clickedNum('9'))} />
+                    <CalcButton Text='Clr' HandleClick={() => clear()} />
                 </Col>
             </Row>
             <Row>
-                <Col>
-                    <CalcButton Text='4' HandleClick={() => setDisplayValue(clickedNum(displayValue, '4'))} />
-                    <CalcButton Text='5' HandleClick={() => setDisplayValue(clickedNum(displayValue, '5'))} />
-                    <CalcButton Text='6' HandleClick={() => setDisplayValue(clickedNum(displayValue, '6'))} />
+                <Col xs={{ span: 3, offset: 5 }}>
+                    <CalcButton Text='4' HandleClick={() => changeDisplayValue(clickedNum('4'))} />
+                    <CalcButton Text='5' HandleClick={() => changeDisplayValue(clickedNum('5'))} />
+                    <CalcButton Text='6' HandleClick={() => changeDisplayValue(clickedNum('6'))} />
                     <CalcButton Text='-' HandleClick={() => clickedOperand('-')} />
                 </Col>
             </Row>
             <Row>
-                <Col>
-                    <CalcButton Text='1' HandleClick={() => setDisplayValue(clickedNum(displayValue, '1'))} />
-                    <CalcButton Text='2' HandleClick={() => setDisplayValue(clickedNum(displayValue, '2'))} />
-                    <CalcButton Text='3' HandleClick={() => setDisplayValue(clickedNum(displayValue, '3'))} />
+                <Col xs={{ span: 3, offset: 5 }}>
+                    <CalcButton Text='1' HandleClick={() => changeDisplayValue(clickedNum('1'))} />
+                    <CalcButton Text='2' HandleClick={() => changeDisplayValue(clickedNum('2'))} />
+                    <CalcButton Text='3' HandleClick={() => changeDisplayValue(clickedNum('3'))} />
                     <CalcButton Text='+' HandleClick={() => clickedOperand('+')} />
                 </Col>
             </Row>
             <Row>
-                <Col>
-                    <CalcButton Text='0' HandleClick={() => setDisplayValue(clickedNum(displayValue, '0'))} />
+                <Col xs={{ span: 3, offset: 5 }}>
+                    <CalcButton Text='0' HandleClick={() => changeDisplayValue(clickedNum('0'))} />
                     <CalcButton Text='=' HandleClick={() => clickedEqual()} />
                 </Col>
             </Row>
