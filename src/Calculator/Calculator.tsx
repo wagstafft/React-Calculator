@@ -54,10 +54,16 @@ export default function Calculator() {
 
         let changedDisplayValue = state.previousDisplayValue
 
-        if (state.lastOperand === '+') {
-            changedDisplayValue += +state.displayValue;
-        } else if (state.lastOperand === '-') {
-            changedDisplayValue -= +state.displayValue;
+        switch (state.lastOperand) {
+            case '+':
+                changedDisplayValue += +state.displayValue;
+                break;
+            case '-':
+                changedDisplayValue -= +state.displayValue;
+                break;
+            case '*':
+                changedDisplayValue *= +state.displayValue;
+                break;
         }
 
         changedState.previousDisplayValue = 0;
@@ -114,6 +120,9 @@ export default function Calculator() {
                 case '+':
                     clickedOperand('+');
                     break;
+                case '*':
+                    clickedOperand('*');
+                    break;
                 case '=':
                 case 'Enter':
                     clickedEqual();
@@ -168,6 +177,7 @@ export default function Calculator() {
             <Row>
                 <Col sm={{ span: 6, offset: 4 }} className="calculator col">
                     <CalcButton text='0' handleClick={() => changeDisplayValue(clickedNum('0'))} />
+                    <CalcButton text='*' handleClick={() => clickedOperand('*')} />
                     <CalcButton text='=' handleClick={() => clickedEqual()} />
                 </Col>
             </Row>
