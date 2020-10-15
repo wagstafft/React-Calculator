@@ -19,12 +19,12 @@ function clickCalcButton(searchText: string) {
 function pressKey(searchText: string) {
   let element = screen.queryAllByText(searchText).length === 1 ? screen.queryByText(searchText) : screen.queryAllByText(searchText)[1];
   if (element) {
-    fireEvent.keyDown(element, {key: searchText});
+    fireEvent.keyDown(element, { key: searchText });
   }
 }
 
 function pressSeriesOfKeys(text: string) {
-  for(let char of text) {
+  for (let char of text) {
     pressKey(char);
   }
 }
@@ -118,4 +118,25 @@ test('test bug with key presses being broken after a click resolved', () => {
   pressSeriesOfKeys('123');
   pressSeriesOfKeys('+123=');
   expect(screen.queryByText('246')).toBeTruthy();
+});
+
+test('test multiplying', () => {
+  // test key presses
+  expect(screen.queryByText('144')).toBeFalsy();
+  pressSeriesOfKeys('12*12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  clickCalcButton('Clr');
+
+  // test mouse clicks
+  expect(screen.queryByText('144')).toBeFalsy();
+  clickSeriesOfButtons('12*12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  clickCalcButton('Clr');
+
+  // test mixing the two
+  expect(screen.queryByText('144')).toBeFalsy();
+  clickSeriesOfButtons('12*');
+  pressSeriesOfKeys('12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  clickCalcButton('Clr');
 });
