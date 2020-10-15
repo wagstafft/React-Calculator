@@ -24,7 +24,12 @@ export default function Calculator() {
         if (state.displayValue === '0') {
             return num;
         } else {
-            return state.displayValue + num;
+            // To prevent overflowing the calculator display
+            if (state.displayValue.length < 13) {
+                return state.displayValue + num;
+            } else {
+                return state.displayValue;
+            }
         }
     }
 
@@ -86,7 +91,6 @@ export default function Calculator() {
     }
 
     function handleKeyPressed(event: any) {
-        event.preventDefault();
         let changedState: CalculatorState = {
             displayValue: state.displayValue,
             lastOperand: state.lastOperand,
@@ -115,9 +119,12 @@ export default function Calculator() {
                     clickedEqual();
                     break;
                 default:
-                    break;
+                    return;
             }
         }
+
+        // Only prevent default if, we consumed the pressed key
+        event.preventDefault();
     }
 
     useEffect(() => {
@@ -130,12 +137,12 @@ export default function Calculator() {
     return (
         <Container fluid={false} className="calculator container">
             <Row>
-                <Col xs={{ span: 5, offset: 4 }} className="calculator col">
+                <Col sm={{ span: 6, offset: 4 }} className="calculator col">
                     <CalcDisplay displayValue={state.displayValue} lastOperand={state.lastOperand} previousDisplayValue={state.previousDisplayValue.toString()} />
                 </Col>
             </Row>
             <Row>
-                <Col xs={{ span: 5, offset: 4 }} className="calculator col">
+                <Col sm={{ span: 6, offset: 4 }} className="calculator col">
                     <CalcButton text='7' handleClick={() => changeDisplayValue(clickedNum('7'))} />
                     <CalcButton text='8' handleClick={() => changeDisplayValue(clickedNum('8'))} />
                     <CalcButton text='9' handleClick={() => changeDisplayValue(clickedNum('9'))} />
@@ -143,7 +150,7 @@ export default function Calculator() {
                 </Col>
             </Row>
             <Row>
-                <Col xs={{ span: 5, offset: 4 }} className="calculator col">
+                <Col sm={{ span: 6, offset: 4 }} className="calculator col">
                     <CalcButton text='4' handleClick={() => changeDisplayValue(clickedNum('4'))} />
                     <CalcButton text='5' handleClick={() => changeDisplayValue(clickedNum('5'))} />
                     <CalcButton text='6' handleClick={() => changeDisplayValue(clickedNum('6'))} />
@@ -151,7 +158,7 @@ export default function Calculator() {
                 </Col>
             </Row>
             <Row>
-                <Col xs={{ span: 5, offset: 4 }} className="calculator col">
+                <Col sm={{ span: 6, offset: 4 }} className="calculator col">
                     <CalcButton text='1' handleClick={() => changeDisplayValue(clickedNum('1'))} />
                     <CalcButton text='2' handleClick={() => changeDisplayValue(clickedNum('2'))} />
                     <CalcButton text='3' handleClick={() => changeDisplayValue(clickedNum('3'))} />
@@ -159,7 +166,7 @@ export default function Calculator() {
                 </Col>
             </Row>
             <Row>
-                <Col xs={{ span: 5, offset: 4 }} className="calculator col">
+                <Col sm={{ span: 6, offset: 4 }} className="calculator col">
                     <CalcButton text='0' handleClick={() => changeDisplayValue(clickedNum('0'))} />
                     <CalcButton text='=' handleClick={() => clickedEqual()} />
                 </Col>
