@@ -13,6 +13,6 @@ afterEach(() => {
 test('renders text', () => {
     let displayText = 'Test Text';
     expect(screen.queryByText(displayText)).toBeFalsy();
-    render(<CalculatorButton Text={displayText} HandleClick={() => console.log('test')} />);
+    render(<CalculatorButton text={displayText} handleClick={() => console.log('test')} />);
     expect(screen.queryByText(displayText)).toBeTruthy();
 });
