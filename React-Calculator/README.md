@@ -1,8 +1,19 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Hosted at [Azure Web App](https://react-calculator.azurewebsites.net/).
+
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `yarn dockerRun`
+Runs React-Calculator in a docker container.
+
+### `yarn dockerBuild`
+Builds React-Calculator docker image.
+
+### `yarn dockerBuildRun`
+Builds React-Calculator and then starts a container.
 
 ### `yarn start`
 

@@ -99,6 +99,9 @@ export default function Calculator() {
         } else if (+event.key) {
             changedState.displayValue = clickedNum(event.key);
             setState(changedState);
+            // Handle backspace and del
+        } else if (event.keyCode === 8 || event.keyCode === 46) {
+            clear();
         } else {
             switch (event.key) {
                 case '-':
@@ -118,9 +121,9 @@ export default function Calculator() {
     }
 
     useEffect(() => {
-        window.addEventListener('keypress', handleKeyPressed);
+        window.addEventListener('keydown', handleKeyPressed);
         return () => {
-            window.removeEventListener('keypress', handleKeyPressed);
+            window.removeEventListener('keydown', handleKeyPressed);
         }
     });
 

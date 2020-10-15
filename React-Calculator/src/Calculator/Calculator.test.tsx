@@ -19,7 +19,7 @@ function clickCalcButton(searchText: string) {
 function pressKey(searchText: string) {
   let element = screen.queryAllByText(searchText).length === 1 ? screen.queryByText(searchText) : screen.queryAllByText(searchText)[1];
   if (element) {
-    fireEvent.keyPress(element, {key: searchText});
+    fireEvent.keyDown(element, {key: searchText});
   }
 }
 
