@@ -37,7 +37,7 @@ function clickSeriesOfButtons(text: string) {
 
 test('DisplayValueConcatination', () => {
   // Make sure we don't somehow already have this value
-  expect(screen.queryByText('123456789')).toBeFalsy();
+  expect(screen.queryByText('1234567890')).toBeFalsy();
 
   // Click each button
   clickSeriesOfButtons('1234567890')
@@ -46,14 +46,14 @@ test('DisplayValueConcatination', () => {
   expect(screen.queryByText('1234567890')).toBeTruthy();
 });
 
-test('InitialCalculatorZeroButtonDoesNothing', () => {
+test('test initial calculator zero button does nothing', () => {
   // Don't want 0 button being clicked to concatinate anything when the display value is 0
   expect(screen.queryByText('00')).toBeFalsy();
   fireEvent.click(screen.queryAllByText('0')[1]);
   expect(screen.queryByText('00')).toBeFalsy();
 });
 
-test('adding two numbers', () => {
+test('test adding two numbers', () => {
   expect(screen.queryByText('111')).toBeFalsy();
   expect(screen.queryByText('222')).toBeFalsy();
   clickSeriesOfButtons('111')
@@ -63,7 +63,7 @@ test('adding two numbers', () => {
   expect(screen.queryByText('222')).toBeTruthy();
 });
 
-test('subtracting two numbers', () => {
+test('test subtracting two numbers', () => {
   expect(screen.queryByText('246')).toBeFalsy();
   expect(screen.queryByText('123')).toBeFalsy();
   clickSeriesOfButtons('246');
@@ -73,7 +73,7 @@ test('subtracting two numbers', () => {
   expect(screen.queryByText('123')).toBeTruthy();
 });
 
-test('clear input', () => {
+test('test clear input', () => {
   expect(screen.queryByText('123')).toBeFalsy();
   clickSeriesOfButtons('123');
   expect(screen.queryByText('123')).toBeTruthy();
@@ -87,7 +87,7 @@ test('test displayTextString', () => {
   expect(screen.queryByText('123+123')).toBeTruthy();
 });
 
-test('display negative number', () => {
+test('test display negative number', () => {
   expect(screen.queryByText('-123')).toBeFalsy();
   clickSeriesOfButtons('-123=');
   expect(screen.queryByText('-123')).toBeTruthy();
@@ -96,7 +96,6 @@ test('display negative number', () => {
 test('test key presses', () => {
   expect(screen.queryByText('-123')).toBeFalsy();
   pressSeriesOfKeys('-123=');
-  // clickSeriesOfButtons('-123=');
   expect(screen.queryByText('-123')).toBeTruthy();
 });
 
