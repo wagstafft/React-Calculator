@@ -6,3 +6,9 @@
 .col.calculator{
     background-color: #718792 ;
 }
+
+.error {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+}

@@ -10,14 +10,16 @@ import Container from 'react-bootstrap/Container';
 interface CalculatorState {
     displayValue: string,
     lastOperand: string,
-    previousDisplayValue: number
+    previousDisplayValue: number,
+    errors: string[]
 };
 
 export default function Calculator() {
     const [state, setState] = useState<CalculatorState>({
         displayValue: '0',
         lastOperand: '',
-        previousDisplayValue: 0
+        previousDisplayValue: 0,
+        errors: []
     });
 
     function clickedNum(num: string): string {
@@ -37,7 +39,8 @@ export default function Calculator() {
         setState({
             displayValue: '0',
             lastOperand: '',
-            previousDisplayValue: 0
+            previousDisplayValue: 0,
+            errors: []
         });
     }
 
@@ -49,7 +52,8 @@ export default function Calculator() {
         let changedState: CalculatorState = {
             displayValue: state.displayValue,
             lastOperand: state.lastOperand,
-            previousDisplayValue: state.previousDisplayValue
+            previousDisplayValue: state.previousDisplayValue,
+            errors: []
         };
 
         let changedDisplayValue = state.previousDisplayValue
@@ -64,6 +68,16 @@ export default function Calculator() {
             case '*':
                 changedDisplayValue *= +state.displayValue;
                 break;
+            case '/':
+                if (+state.displayValue === 0) {
+                    changedState.errors = ['Error Divide By Zero']
+                    break;
+                }
+
+                changedDisplayValue /= +state.displayValue;
+                break;
+            default:
+                break;
         }
 
         changedState.previousDisplayValue = 0;
@@ -76,7 +90,8 @@ export default function Calculator() {
         setState({
             displayValue: text,
             previousDisplayValue: state.previousDisplayValue,
-            lastOperand: state.lastOperand
+            lastOperand: state.lastOperand,
+            errors: []
         });
     }
 
@@ -84,12 +99,13 @@ export default function Calculator() {
         let changedState: CalculatorState = {
             displayValue: state.displayValue,
             lastOperand: state.lastOperand,
-            previousDisplayValue: state.previousDisplayValue
+            previousDisplayValue: state.previousDisplayValue,
+            errors: []
         };
 
         if (state.lastOperand === '') {
             changedState.previousDisplayValue = +state.displayValue;
-            changedState.displayValue = '0';
+            changedState.displayValue = '';
         }
 
         changedState.lastOperand = operand;
@@ -100,7 +116,8 @@ export default function Calculator() {
         let changedState: CalculatorState = {
             displayValue: state.displayValue,
             lastOperand: state.lastOperand,
-            previousDisplayValue: state.previousDisplayValue
+            previousDisplayValue: state.previousDisplayValue,
+            errors: []
         };
 
         if (event.key === '0') {
@@ -123,6 +140,9 @@ export default function Calculator() {
                 case '*':
                     clickedOperand('*');
                     break;
+                case '/':
+                    clickedOperand('/');
+                    break;
                 case '=':
                 case 'Enter':
                     clickedEqual();
@@ -143,8 +163,19 @@ export default function Calculator() {
         }
     });
 
+    let errorElement = state.errors.map((error, i) => (
+        <Row key={error + i} className="error">
+            <Col sm={{ span: 6, offset: 4 }}>
+                <h1>
+                    {error}
+                </h1>
+            </Col>
+        </Row>
+    ));
+
     return (
         <Container fluid={false} className="calculator container">
+            {errorElement}
             <Row>
                 <Col sm={{ span: 6, offset: 4 }} className="calculator col">
                     <CalcDisplay displayValue={state.displayValue} lastOperand={state.lastOperand} previousDisplayValue={state.previousDisplayValue.toString()} />
@@ -178,6 +209,7 @@ export default function Calculator() {
                 <Col sm={{ span: 6, offset: 4 }} className="calculator col">
                     <CalcButton text='0' handleClick={() => changeDisplayValue(clickedNum('0'))} />
                     <CalcButton text='*' handleClick={() => clickedOperand('*')} />
+                    <CalcButton text='/' handleClick={() => clickedOperand('/')} />
                     <CalcButton text='=' handleClick={() => clickedEqual()} />
                 </Col>
             </Row>
