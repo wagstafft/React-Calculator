@@ -2,6 +2,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Hosted at [Azure Web App](https://react-calculator.azurewebsites.net/).
 
+CI Pipeline is Github -> Docker Hub -> Azure Web App. If any tests fail, the docker build will fail.
+
 ## Available Scripts
 
 In the project directory, you can run:
