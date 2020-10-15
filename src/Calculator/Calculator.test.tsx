@@ -140,3 +140,61 @@ test('test multiplying', () => {
   expect(screen.queryByText('144')).toBeTruthy();
   clickCalcButton('Clr');
 });
+
+test('test division', () => {
+  // test key presses
+  expect(screen.queryByText('144')).toBeFalsy();
+  pressSeriesOfKeys('12*12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  pressSeriesOfKeys('/12=');
+  expect(screen.queryByText('12')).toBeTruthy();
+  clickCalcButton('Clr');
+
+  // test mouse clicks
+  expect(screen.queryByText('144')).toBeFalsy();
+  clickSeriesOfButtons('12*12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  clickSeriesOfButtons('/12=');
+  expect(screen.queryByText('12')).toBeTruthy();
+  clickCalcButton('Clr');
+
+
+  expect(screen.queryByText('144')).toBeFalsy();
+  clickSeriesOfButtons('12*12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  clickCalcButton('Clr');
+
+  // test mixing the two
+  expect(screen.queryByText('144')).toBeFalsy();
+  clickSeriesOfButtons('12*12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  pressSeriesOfKeys('/12=');
+  expect(screen.queryByText('12')).toBeTruthy();
+  clickCalcButton('Clr');
+});
+
+test('test divide by zero', () => {
+  // test key presses
+  expect(screen.queryByText('144')).toBeFalsy();
+  pressSeriesOfKeys('12*12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  pressSeriesOfKeys('/0=');
+  expect(screen.queryByText('Error Divide By Zero')).toBeTruthy();
+  clickCalcButton('Clr');
+
+  // test mouse clicks
+  expect(screen.queryByText('144')).toBeFalsy();
+  clickSeriesOfButtons('12*12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  clickSeriesOfButtons('/0=');
+  expect(screen.queryByText('Error Divide By Zero')).toBeTruthy();
+  clickCalcButton('Clr');
+
+  // test mixing the two
+  expect(screen.queryByText('144')).toBeFalsy();
+  clickSeriesOfButtons('12*12=');
+  expect(screen.queryByText('144')).toBeTruthy();
+  pressSeriesOfKeys('/0=');
+  expect(screen.queryByText('Error Divide By Zero')).toBeTruthy();
+  clickCalcButton('Clr');
+});
