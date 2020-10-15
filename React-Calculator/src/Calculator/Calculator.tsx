@@ -10,14 +10,14 @@ import Container from 'react-bootstrap/Container';
 interface CalculatorState {
     displayValue: string,
     lastOperand: string,
-    tallyValue: number
+    previousDisplayValue: number
 };
 
 export default function Calculator() {
     const [state, setState] = useState<CalculatorState>({
         displayValue: '0',
         lastOperand: '',
-        tallyValue: 0
+        previousDisplayValue: 0
     });
 
     function clickedNum(num: string): string {
@@ -32,7 +32,7 @@ export default function Calculator() {
         setState({
             displayValue: '0',
             lastOperand: '',
-            tallyValue: 0
+            previousDisplayValue: 0
         });
     }
 
@@ -44,10 +44,10 @@ export default function Calculator() {
         let changedState: CalculatorState = {
             displayValue: state.displayValue,
             lastOperand: state.lastOperand,
-            tallyValue: state.tallyValue
+            previousDisplayValue: state.previousDisplayValue
         };
 
-        let changedDisplayValue = state.tallyValue
+        let changedDisplayValue = state.previousDisplayValue
 
         if (state.lastOperand === '+') {
             changedDisplayValue += +state.displayValue;
@@ -55,7 +55,7 @@ export default function Calculator() {
             changedDisplayValue -= +state.displayValue;
         }
 
-        changedState.tallyValue = 0;
+        changedState.previousDisplayValue = 0;
         changedState.displayValue = changedDisplayValue.toString();
         changedState.lastOperand = '';
         setState(changedState);
@@ -64,7 +64,7 @@ export default function Calculator() {
     function changeDisplayValue(text: string): void {
         setState({
             displayValue: text,
-            tallyValue: state.tallyValue,
+            previousDisplayValue: state.previousDisplayValue,
             lastOperand: state.lastOperand
         });
     }
@@ -73,11 +73,11 @@ export default function Calculator() {
         let changedState: CalculatorState = {
             displayValue: state.displayValue,
             lastOperand: state.lastOperand,
-            tallyValue: state.tallyValue
+            previousDisplayValue: state.previousDisplayValue
         };
 
         if (state.lastOperand === '') {
-            changedState.tallyValue = +state.displayValue;
+            changedState.previousDisplayValue = +state.displayValue;
             changedState.displayValue = '0';
         }
 
@@ -90,7 +90,7 @@ export default function Calculator() {
         let changedState: CalculatorState = {
             displayValue: state.displayValue,
             lastOperand: state.lastOperand,
-            tallyValue: state.tallyValue
+            previousDisplayValue: state.previousDisplayValue
         };
 
         if (event.key === '0') {
@@ -128,7 +128,7 @@ export default function Calculator() {
         <Container fluid={false} className="calculator container">
             <Row>
                 <Col xs={{ span: 5, offset: 4 }} className="calculator col">
-                    <CalcDisplay displayValue={state.displayValue} lastOperand={state.lastOperand} tallyValue={state.tallyValue.toString()} />
+                    <CalcDisplay displayValue={state.displayValue} lastOperand={state.lastOperand} previousDisplayValue={state.previousDisplayValue.toString()} />
                 </Col>
             </Row>
             <Row>

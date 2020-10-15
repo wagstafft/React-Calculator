@@ -6,11 +6,11 @@ import './CalculatorDisplay.css';
 interface CalculatorDisplayProps {
     displayValue: string;
     lastOperand: string;
-    tallyValue: string;
+    previousDisplayValue: string;
 }
 
-function getDisplayString(tallyValue: string, lastOperand: string, displayValue: string) {
-    let displayString = `${lastOperand ? tallyValue : ''}`;
+function getDisplayString(previousDisplayValue: string, lastOperand: string, displayValue: string) {
+    let displayString = `${lastOperand ? previousDisplayValue : ''}`;
     displayString += `${lastOperand ? lastOperand : ''}`;
     displayString += `${displayValue}`;
     return displayString;
@@ -19,7 +19,7 @@ function getDisplayString(tallyValue: string, lastOperand: string, displayValue:
 function CalculatorDisplay(props: CalculatorDisplayProps) {
     return (
         <div className="calculator-display">
-            {getDisplayString(props.tallyValue, props.lastOperand, props.displayValue)}
+            {getDisplayString(props.previousDisplayValue, props.lastOperand, props.displayValue)}
         </div>
     )
 }
