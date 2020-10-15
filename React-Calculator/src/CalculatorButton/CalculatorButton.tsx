@@ -3,13 +3,13 @@ import Button from 'react-bootstrap/Button';
 import './CalculatorButton.css';
 
 interface CalculatorButtonProps {
-    Text: string;
-    HandleClick: any;
+    text: string;
+    handleClick: any;
 }
 
 function CalculatorButton(props: CalculatorButtonProps) {
     return (
-        <Button className="calculator-button btn btn-lg btn-secondary" onClick={props.HandleClick}> {props.Text}</Button>
+        <Button className="calculator-button btn btn-lg btn-secondary" onClick={props.handleClick}> {props.text}</Button>
     )
 }
 

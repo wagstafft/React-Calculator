@@ -4,23 +4,22 @@ import React from 'react';
 import './CalculatorDisplay.css';
 
 interface CalculatorDisplayProps {
-    DisplayValue: string;
-    LastOperand: string;
-    TallyValue: string;
-    DisplayText: string;
+    displayValue: string;
+    lastOperand: string;
+    tallyValue: string;
+}
+
+function getDisplayString(tallyValue: string, lastOperand: string, displayValue: string) {
+    let displayString = `${lastOperand ? tallyValue : ''}`;
+    displayString += `${lastOperand ? lastOperand : ''}`;
+    displayString += `${displayValue}`;
+    return displayString;
 }
 
 function CalculatorDisplay(props: CalculatorDisplayProps) {
-    // let tallyValue = props.TallyValue && props.TallyValue !== '0' ? <Col> {props.TallyValue} </Col> : '';
-    // let lastOperand = props.LastOperand ? <Col> {props.LastOperand} </Col> : '';
     return (
         <div className="calculator-display">
-            {props.DisplayText}
-            {/* {tallyValue}
-            <Col>
-                {props.DisplayValue}
-            </Col>
-            {lastOperand} */}
+            {getDisplayString(props.tallyValue, props.lastOperand, props.displayValue)}
         </div>
     )
 }
